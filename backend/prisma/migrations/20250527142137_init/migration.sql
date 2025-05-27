@@ -27,4 +27,4 @@ CREATE TABLE "Mark" (
 CREATE UNIQUE INDEX "Student_email_key" ON "Student"("email");
 
 -- AddForeignKey
-ALTER TABLE "Mark" ADD CONSTRAINT "Mark_studentId_fkey" FOREIGN KEY ("studentId") REFERENCES "Student"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Mark" ADD CONSTRAINT "Mark_studentId_fkey" FOREIGN KEY ("studentId") REFERENCES "Student"("id") ON DELETE CASCADE ON UPDATE CASCADE;

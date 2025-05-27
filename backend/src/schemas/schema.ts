@@ -10,7 +10,7 @@ export const SUBJECT_ENUM = z.enum([
 
 export const createMarkSchema = z.object({
   subject: SUBJECT_ENUM,
-  score: z.number().int().min(0).max(100),
+  score: z.number().min(0).max(100),
 });
 
 export const updateMarkSchema = z.object({

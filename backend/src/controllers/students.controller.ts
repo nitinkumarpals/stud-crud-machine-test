@@ -14,9 +14,10 @@ export const create = async (req: Request, res: Response) => {
       return;
     }
 
-    const { name, email, age } = parsedBody.data;
-    const existingUser = await prisma.student.findUnique({ where: { email } });
-
+    const { marks, ...studentData } = parsedBody.data;
+    const existingUser = await prisma.student.findUnique({
+      where: { email: studentData.email },
+    });
     if (existingUser) {
       res.status(409).json({
         error: "User already exists",
@@ -24,21 +25,25 @@ export const create = async (req: Request, res: Response) => {
       });
       return;
     }
+    const marksData = (marks ?? []).map((mark) => ({
+      subject: mark.subject,
+      score: Math.round(mark.score * 100),
+    }));
+
     const student = await prisma.student.create({
       data: {
-        name,
-        email,
-        age,
+        ...studentData,
+        marks: {
+          create: marksData,
+        },
       },
     });
 
     res.status(201).json({
       status: "success",
       data: {
-        id: student.id,
-        name: student.name,
-        email: student.email,
-        age: student.age,
+        student: studentData,
+        marks: marksData,
       },
     });
     return;
@@ -62,6 +67,10 @@ export const create = async (req: Request, res: Response) => {
 export const getStudents = async (req: Request, res: Response) => {
   try {
     const students = await prisma.student.findMany();
+    if (students.length === 0) {
+      res.status(404).json({ message: "No students found" });
+      return;
+    }
     res.status(200).json({
       status: "success",
       data: students,
@@ -107,10 +116,10 @@ export const deleteById = async (req: Request, res: Response) => {
       return;
     }
     await prisma.student.delete({
-      where:{
-        id:req.params.id
-      }
-    })
+      where: {
+        id: req.params.id,
+      },
+    });
     res.status(200).json({
       status: "success",
       message: "Student deleted successfully",
