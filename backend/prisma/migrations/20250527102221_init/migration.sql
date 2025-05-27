@@ -4,10 +4,9 @@ CREATE TYPE "SUBJECT" AS ENUM ('Math', 'Science', 'English', 'Social_Studies', '
 -- CreateTable
 CREATE TABLE "Student" (
     "id" TEXT NOT NULL,
-    "firstName" TEXT NOT NULL,
-    "lastName" TEXT,
+    "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "dateOfBirth" DATE NOT NULL,
+    "age" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

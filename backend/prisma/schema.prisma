@@ -17,10 +17,9 @@ datasource db {
 
 model Student {
   id              String      @id @default(uuid())
-  firstName       String   
-  lastName        String?
+  name            String
   email           String   @unique
-  dateOfBirth     DateTime @db.Date
+  age             Int
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   marks           Mark[]
