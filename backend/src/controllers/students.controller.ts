@@ -102,9 +102,9 @@ export const update = async (req: Request, res: Response) => {
         marks: marks
           ? {
               deleteMany: {},
-              create: marks.map((m) => ({
-                subject: m.subject,
-                score: Math.round(m.score * 100),
+              create: marks.map((mark) => ({
+                subject: mark.subject,
+                score: Math.round(mark.score * 100),
               })),
             }
           : undefined,
