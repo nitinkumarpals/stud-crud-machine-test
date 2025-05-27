@@ -1,5 +1,5 @@
 import { prisma } from "../config/db";
-import { registerStudent } from "../schemas/student.schema";
+import { registerStudent } from "../schemas/schema";
 import type { Request, Response } from "express";
 
 export const create = async (req: Request, res: Response) => {

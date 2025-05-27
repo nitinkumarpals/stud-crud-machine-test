@@ -1,13 +1,33 @@
 import { z } from "zod";
 
+export const SUBJECT_ENUM = z.enum([
+  "Math",
+  "Science",
+  "English",
+  "Social_Studies",
+  "Art",
+]);
+
+export const createMarkSchema = z.object({
+  subject: SUBJECT_ENUM,
+  score: z.number().int().min(0).max(100),
+});
+
+export const updateMarkSchema = z.object({
+  subject: SUBJECT_ENUM.optional(),
+  score: z.number().int().min(0).max(100).optional(),
+});
+
 export const registerStudent = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
   age: z.number().positive("Age must be a positive number"),
+  marks: z.array(createMarkSchema).optional(),
 });
 
 export const updateStudent = z.object({
   firstName: z.string().min(1, "Name is required").optional(),
   email: z.string().email("Invalid email address").optional(),
   age: z.number().positive("Age must be a positive number"),
+  marks: z.array(updateMarkSchema).optional(),
 });
