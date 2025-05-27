@@ -14,3 +14,30 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+model Student {
+  id              String      @id @default(uuid())
+  firstName       String   
+  lastName        String?
+  email           String   @unique
+  dateOfBirth     DateTime @db.Date
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  marks           Mark[]
+}
+
+model Mark {
+  id              String      @id @default(uuid())
+  subject         SUBJECT
+  score           Int
+  studentId       String
+  student         Student     @relation(fields: [studentId],references: [id])
+}
+
+enum SUBJECT {
+  Math
+  Science
+  English
+  Social_Studies
+  Art
+}
