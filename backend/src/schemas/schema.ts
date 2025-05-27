@@ -14,8 +14,8 @@ export const createMarkSchema = z.object({
 });
 
 export const updateMarkSchema = z.object({
-  subject: SUBJECT_ENUM.optional(),
-  score: z.number().int().min(0).max(100).optional(),
+  subject: SUBJECT_ENUM,
+  score: z.number().min(0).max(100),
 });
 
 export const registerStudent = z.object({
@@ -28,6 +28,6 @@ export const registerStudent = z.object({
 export const updateStudent = z.object({
   firstName: z.string().min(1, "Name is required").optional(),
   email: z.string().email("Invalid email address").optional(),
-  age: z.number().positive("Age must be a positive number"),
+  age: z.number().positive("Age must be a positive number").optional(),
   marks: z.array(updateMarkSchema).optional(),
 });
