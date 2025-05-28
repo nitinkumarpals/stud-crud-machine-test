@@ -25,7 +25,11 @@ type StudentInput = {
   marks: Mark[];
 };
 
-function AddStudent() {
+type AddStudentsProps = {
+  onStudentAdded?: () => void;
+};
+
+function AddStudent({ onStudentAdded }: AddStudentsProps) {
   const [show, setShow] = useState(false);
   const [inputs, setInputs] = useState<StudentInput>({
     name: "",
@@ -101,6 +105,9 @@ function AddStudent() {
         showConfirmButton: false,
       });
       resetForm();
+      if (onStudentAdded) {
+        onStudentAdded();
+      }
     } catch (err) {
       console.error(err);
       Swal.fire({

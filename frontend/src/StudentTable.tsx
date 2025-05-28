@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import UpdateStudent from "./components/UpdateStudent";
+import AddStudents from "./components/AddStudents";
 import type { Student, Meta } from "./types";
 
 interface Mark {
@@ -81,7 +82,10 @@ const StudentTable: React.FC = () => {
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Student Records</h2>
+       <div className="d-flex justify-content-between align-items-center mb-3">
+      <h2 className="mb-0">Student Records</h2>
+      <AddStudents onStudentAdded={fetchStudents} />
+    </div>
       <table className="table table-bordered table-striped">
         <thead className="table-dark">
           <tr>
