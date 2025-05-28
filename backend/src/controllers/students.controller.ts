@@ -32,7 +32,7 @@ export const create = async (req: Request, res: Response) => {
     }
     const marksData = (marks ?? []).map((mark) => ({
       subject: mark.subject,
-      score: Math.round(mark.score * 100),
+      score: Math.round(mark.score * 100), 
     }));
 
     const student = await prisma.student.create({

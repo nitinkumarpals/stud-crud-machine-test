@@ -25,7 +25,7 @@ function UpdateStudent({
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
-    age: 0,
+    age: "",
     marks: [] as { subject: string; score: number }[],
   });
 
@@ -76,7 +76,7 @@ function UpdateStudent({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     
-    axios.put(`http://localhost:8080/api/student/update/${student.id}`, inputs)
+    axios.put(`http://localhost:8080/api/student/update/${student.id}`, {...inputs, age: parseInt(inputs.age)})
       .then(response => {
         console.log("Student updated successfully:", response.data);
         Swal.fire({
