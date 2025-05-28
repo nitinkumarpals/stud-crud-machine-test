@@ -97,7 +97,13 @@ export const update = async (req: Request, res: Response) => {
       });
       return;
     }
-
+    if (studentData.email && studentData.email !== user.email) {
+      res.status(400).json({
+        error: "Email cannot be updated",
+        details: "Email is already registered and cannot be changed",
+      });
+      return;
+    }
     const updatedStudent = await prisma.student.update({
       where: { id: req.params.id },
       data: {

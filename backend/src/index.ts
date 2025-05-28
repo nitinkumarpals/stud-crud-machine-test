@@ -13,7 +13,7 @@ app.use(
 
 app.use(express.json());
 
-app.get("/health", async (req: Request, res: Response) => {
+app.get(["/","/health"], async (req: Request, res: Response) => {
   try {
     res.status(200).json({
       status: "healthy",

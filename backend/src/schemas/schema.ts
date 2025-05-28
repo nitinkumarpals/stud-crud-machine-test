@@ -26,7 +26,7 @@ export const registerStudent = z.object({
 });
 
 export const updateStudent = z.object({
-  firstName: z.string().min(1, "Name is required").optional(),
+  name: z.string().min(1, "Name is required").optional(),
   email: z.string().email("Invalid email address").optional(),
   age: z.number().positive("Age must be a positive number").optional(),
   marks: z.array(updateMarkSchema).optional(),
