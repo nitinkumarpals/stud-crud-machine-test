@@ -43,6 +43,16 @@ function UpdateStudent({
 
   const addMark = () => {
     const scoreNum = parseFloat(newMark.score);
+    
+    if (inputs.marks.find((mark) => mark.subject === newMark.subject)) {
+      Swal.fire({
+        icon: "error",
+        title: "Duplicate Subject",
+        text: "You have already added a mark for this subject.",
+      });
+      return;
+    }
+
     if (
       newMark.subject &&
       !isNaN(scoreNum) &&
@@ -55,7 +65,11 @@ function UpdateStudent({
       }));
       setNewMark({ subject: "", score: "" });
     } else {
-      alert("Score must be between 0 and 100.");
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Input",
+        text: "Please select a subject and enter a valid score between 0 and 100.",
+      });
     }
   };
 
