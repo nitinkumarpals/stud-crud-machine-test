@@ -1,7 +1,10 @@
 import { prisma } from "../config/db";
-import { registerStudent, updateStudent } from "../schemas/schema";
+import {
+  paginationQuerySchema,
+  registerStudent,
+  updateStudent,
+} from "../schemas/schema";
 import type { Request, Response } from "express";
-
 export const create = async (req: Request, res: Response) => {
   try {
     const body = req.body;
@@ -141,11 +144,38 @@ export const update = async (req: Request, res: Response) => {
 
 export const getStudents = async (req: Request, res: Response) => {
   try {
-    const students = await prisma.student.findMany({
-      include: {
-        marks: true,
-      },
-    });
+    const parsed = paginationQuerySchema.safeParse(req.query);
+
+    if (!parsed.success) {
+      res.status(400).json({
+        error: "Invalid query parameters",
+        message: parsed.error.errors.map(
+          (err) => `${err.path[0]} ${err.message}`
+        ),
+      });
+      return;
+    }
+    const page = parsed.data.page ? parseInt(parsed.data.page) : null;
+    const limit = parsed.data.limit ? parseInt(parsed.data.limit) : null;
+
+    const findOptions: {
+      include: { marks: boolean };
+      skip?: number;
+      take?: number;
+    } = {
+      include: { marks: true },
+    };
+
+    if (page && limit) {
+      findOptions.skip = (page - 1) * limit;
+      findOptions.take = limit;
+    }
+
+    const [students, total] = await Promise.all([
+      prisma.student.findMany(findOptions),
+      prisma.student.count(),
+    ]);
+
     if (students.length === 0) {
       res.status(404).json({ message: "No students found" });
       return;
@@ -159,6 +189,11 @@ export const getStudents = async (req: Request, res: Response) => {
     res.status(200).json({
       status: "success",
       data: students,
+      meta: {
+        page,
+        limit,
+        total,
+      },
     });
     return;
   } catch (error) {
