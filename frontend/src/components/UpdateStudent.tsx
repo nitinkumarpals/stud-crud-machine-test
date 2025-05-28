@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -30,12 +31,12 @@ function UpdateStudent({
 
   const [newMark, setNewMark] = useState({ subject: "", score: "" });
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleMarkChange = (e: any) => {
+  const handleMarkChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setNewMark((prev) => ({ ...prev, [name]: value }));
   };
@@ -58,10 +59,9 @@ function UpdateStudent({
     }
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     
-    // Make API call to update student
     axios.put(`http://localhost:8080/api/student/update/${student.id}`, inputs)
       .then(response => {
         console.log("Student updated successfully:", response.data);
@@ -71,13 +71,13 @@ function UpdateStudent({
           icon: "success",
           confirmButtonText: "OK"
         });
-        closeHandler(); // Close the modal and refresh the student list
+        closeHandler(); 
       })
       .catch(error => {
         console.error("Error updating student:", error);
         Swal.fire({
           title: "Error!",
-          text: "Failed to update student information",
+          text: `Failed to update student information: ${error.message}`,
           icon: "error",
           confirmButtonText: "OK"
         });

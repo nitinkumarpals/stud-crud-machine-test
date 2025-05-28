@@ -22,3 +22,9 @@ export interface Student {
   updatedAt: string;
   marks: Mark[];
 }
+
+export interface Meta {
+  page: number;
+  limit: number;
+  total: number;
+}

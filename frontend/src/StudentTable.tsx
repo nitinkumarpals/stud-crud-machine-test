@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import UpdateStudent from "./components/UpdateStudent";
+import type { Student, Meta } from "./types";
 
 interface Mark {
   id: string;
@@ -12,20 +13,10 @@ interface Mark {
   studentId: string;
 }
 
-interface Student {
-  id: string;
-  name: string;
-  email: string;
-  age: number;
-  createdAt: string;
-  updatedAt: string;
-  marks: Mark[];
-}
-
 const StudentTable: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [meta, setMeta] = useState<any>({
+  const [meta, setMeta] = useState<Meta>({
     page: 0,
     limit: 0,
     total: 0,
@@ -63,10 +54,10 @@ const StudentTable: React.FC = () => {
     if (result.isConfirmed) {
       try {
         await axios.delete(`http://localhost:8080/api/student/delete/${id}`);
-        fetchStudents(); // Refresh the list after deletion
+        fetchStudents();
         Swal.fire("Deleted!", "Student has been deleted.", "success");
       } catch (error) {
-        Swal.fire("Error!", "Failed to delete student.", "error");
+        Swal.fire(`Error!`, `Failed to delete student. ${error}`, "error");
       }
     }
   };
@@ -77,12 +68,14 @@ const StudentTable: React.FC = () => {
 
   const closeUpdateModal = () => {
     setSelectedStudent(null);
-    fetchStudents(); // Refresh the list after update
+    fetchStudents(); 
   };
 
-  // Helper function to get mark score by subject
+
   const getMarkBySubject = (marks: Mark[], subject: string): string => {
-    const mark = marks.find(m => m.subject.toLowerCase() === subject.toLowerCase());
+    const mark = marks.find(
+      (m) => m.subject.toLowerCase() === subject.toLowerCase()
+    );
     return mark ? mark.score.toString() : "-";
   };
 
@@ -156,7 +149,9 @@ const StudentTable: React.FC = () => {
         <button
           className="btn btn-secondary"
           onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(meta.total / meta.limit)))
+            setCurrentPage((prev) =>
+              Math.min(prev + 1, Math.ceil(meta.total / meta.limit))
+            )
           }
           disabled={currentPage === Math.ceil(meta.total / meta.limit)}
         >
@@ -165,7 +160,10 @@ const StudentTable: React.FC = () => {
       </div>
 
       {selectedStudent && (
-        <UpdateStudent student={selectedStudent} closeHandler={closeUpdateModal} />
+        <UpdateStudent
+          student={selectedStudent}
+          closeHandler={closeUpdateModal}
+        />
       )}
     </div>
   );
