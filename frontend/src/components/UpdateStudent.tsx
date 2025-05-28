@@ -97,7 +97,7 @@ function UpdateStudent({
     <>
       <Modal show={Boolean(student.id)} onHide={closeHandler}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Student</Modal.Title>
+          <Modal.Title>Update Student</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
