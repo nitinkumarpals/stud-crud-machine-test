@@ -5,15 +5,11 @@ import cors from "cors";
 import studentRoute from "./routes/studentRoutes";
 const app: Application = express();
 const port = process.env.PORT || 8080;
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use(cors());
 
 app.use(express.json());
 
-app.get(["/","/health"], async (req: Request, res: Response) => {
+app.get(["/", "/health"], async (req: Request, res: Response) => {
   try {
     res.status(200).json({
       status: "healthy",
